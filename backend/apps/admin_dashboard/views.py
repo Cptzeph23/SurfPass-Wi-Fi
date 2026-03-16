@@ -1,12 +1,7 @@
-"""
-SurfPass WiFi - Admin Dashboard API
-Revenue stats, session management, device control
-"""
 import logging
 from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Sum, Count, Q
-from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -14,7 +9,8 @@ from apps.devices.models import Device
 from apps.sessions.models import Session, Package, Voucher
 from apps.payments.models import Payment
 from apps.sessions.service import SessionService
-from apps.sessions.mikrotik import get_mikrotik_client
+import secrets
+import string
 
 logger = logging.getLogger(__name__)
 
@@ -22,46 +18,45 @@ logger = logging.getLogger(__name__)
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def dashboard_overview(request):
-    """
-    Main dashboard stats: revenue, active sessions, totals.
-    """
+    """Revenue, session, device summary for the dashboard."""
     now = timezone.now()
     today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    this_month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 
-    # Revenue stats
     revenue_today = Payment.objects.filter(
         status="completed", completed_at__gte=today_start
     ).aggregate(total=Sum("amount"))["total"] or 0
 
     revenue_month = Payment.objects.filter(
-        status="completed", completed_at__gte=this_month_start
+        status="completed", completed_at__gte=month_start
     ).aggregate(total=Sum("amount"))["total"] or 0
 
-    revenue_all_time = Payment.objects.filter(
+    revenue_all = Payment.objects.filter(
         status="completed"
     ).aggregate(total=Sum("amount"))["total"] or 0
 
-    # Session stats
     active_sessions = Session.objects.filter(
-        status=Session.Status.ACTIVE, expiry_time__gt=now
+        status=Session.Status.ACTIVE,
+        expiry_time__gt=now,
     ).count()
 
     sessions_today = Session.objects.filter(
         start_time__gte=today_start,
-        status__in=[Session.Status.ACTIVE, Session.Status.EXPIRED, Session.Status.TERMINATED],
+        status__in=[
+            Session.Status.ACTIVE,
+            Session.Status.EXPIRED,
+            Session.Status.TERMINATED,
+        ],
     ).count()
 
-    # Device stats
-    total_devices = Device.objects.count()
-    devices_online_today = Device.objects.filter(last_seen__gte=today_start).count()
-
-    # Payment stats
     payments_today = Payment.objects.filter(
-        status="completed", completed_at__gte=today_start
+        status="completed",
+        completed_at__gte=today_start,
     ).count()
 
-    # Package popularity
+    total_devices = Device.objects.count()
+    devices_today = Device.objects.filter(last_seen__gte=today_start).count()
+
     package_stats = (
         Payment.objects.filter(status="completed")
         .values("package__name")
@@ -73,18 +68,18 @@ def dashboard_overview(request):
         "revenue": {
             "today": float(revenue_today),
             "this_month": float(revenue_month),
-            "all_time": float(revenue_all_time),
+            "all_time": float(revenue_all),
         },
         "sessions": {
             "active_now": active_sessions,
             "today": sessions_today,
         },
-        "devices": {
-            "total": total_devices,
-            "online_today": devices_online_today,
-        },
         "payments": {
             "completed_today": payments_today,
+        },
+        "devices": {
+            "total": total_devices,
+            "online_today": devices_today,
         },
         "package_stats": list(package_stats),
     })
@@ -93,13 +88,12 @@ def dashboard_overview(request):
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def active_sessions(request):
-    """List all currently active sessions with time remaining."""
+    """List all currently active sessions."""
     now = timezone.now()
-    sessions = (
-        Session.objects.filter(status=Session.Status.ACTIVE, expiry_time__gt=now)
-        .select_related("device", "package")
-        .order_by("expiry_time")
-    )
+    sessions = Session.objects.filter(
+        status=Session.Status.ACTIVE,
+        expiry_time__gt=now,
+    ).select_related("device", "package").order_by("expiry_time")
 
     data = []
     for s in sessions:
@@ -120,44 +114,55 @@ def active_sessions(request):
 
 @api_view(["POST"])
 @permission_classes([IsAdminUser])
-def terminate_session(request, session_id: str):
-    """Manually terminate a session (admin disconnect)."""
+def terminate_session(request, session_id):
+    """Manually disconnect a user."""
     try:
         session = Session.objects.select_related("device").get(
-            id=session_id, status=Session.Status.ACTIVE
+            id=session_id,
+            status=Session.Status.ACTIVE,
         )
     except Session.DoesNotExist:
         return Response({"error": "Active session not found."}, status=404)
 
     success = SessionService.terminate_session(session, reason="admin")
     if success:
-        return Response({"success": True, "message": f"Session {session_id} terminated."})
-    return Response({"success": False, "error": "Failed to terminate session."}, status=500)
+        return Response({
+            "success": True,
+            "message": f"Session {session_id} terminated.",
+        })
+    return Response(
+        {"success": False, "error": "Failed to terminate session."},
+        status=500,
+    )
 
 
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def device_list(request):
-    """List all known devices with session history."""
+    """Paginated list of all known devices."""
     page = int(request.GET.get("page", 1))
     per_page = int(request.GET.get("per_page", 50))
-    search = request.GET.get("search", "")
+    search = request.GET.get("search", "").strip()
     offset = (page - 1) * per_page
 
     qs = Device.objects.all()
     if search:
         qs = qs.filter(
-            Q(mac_address__icontains=search) | Q(phone_number__icontains=search)
+            Q(mac_address__icontains=search)
+            | Q(phone_number__icontains=search)
         )
 
     total = qs.count()
     devices = qs.order_by("-last_seen")[offset: offset + per_page]
 
+    now = timezone.now()
     data = []
     for d in devices:
-        active_session = Session.objects.filter(
-            device=d, status=Session.Status.ACTIVE, expiry_time__gt=timezone.now()
-        ).first()
+        active = Session.objects.filter(
+            device=d,
+            status=Session.Status.ACTIVE,
+            expiry_time__gt=now,
+        ).select_related("package").first()
 
         data.append({
             "id": str(d.id),
@@ -170,10 +175,10 @@ def device_list(request):
             "total_sessions": d.total_sessions,
             "total_spent": float(d.total_spent),
             "active_session": {
-                "id": str(active_session.id),
-                "package": active_session.package.name,
-                "time_remaining": active_session.time_remaining_display,
-            } if active_session else None,
+                "id": str(active.id),
+                "package": active.package.name,
+                "time_remaining": active.time_remaining_display,
+            } if active else None,
         })
 
     return Response({
@@ -186,42 +191,46 @@ def device_list(request):
 
 @api_view(["POST"])
 @permission_classes([IsAdminUser])
-def block_device(request, mac_address: str):
-    """Block/unblock a device by MAC address."""
+def block_device(request, mac_address):
+    """Block or unblock a device by MAC address."""
     try:
-        device = Device.objects.get(mac_address=mac_address.upper())
+        device = Device.objects.get(
+            mac_address=mac_address.upper()
+        )
     except Device.DoesNotExist:
         return Response({"error": "Device not found."}, status=404)
 
     action = request.data.get("action", "block")
+
     if action == "block":
         device.is_blocked = True
         device.block_reason = request.data.get("reason", "Blocked by admin")
-        device.save()
-        # Terminate active sessions
-        for session in Session.objects.filter(device=device, status=Session.Status.ACTIVE):
-            SessionService.terminate_session(session, reason="admin_block")
+        device.save(update_fields=["is_blocked", "block_reason"])
+        for s in Session.objects.filter(
+            device=device, status=Session.Status.ACTIVE
+        ):
+            SessionService.terminate_session(s, reason="admin_block")
         return Response({"success": True, "message": "Device blocked."})
-    else:
-        device.is_blocked = False
-        device.block_reason = None
-        device.save()
-        return Response({"success": True, "message": "Device unblocked."})
+
+    device.is_blocked = False
+    device.block_reason = None
+    device.save(update_fields=["is_blocked", "block_reason"])
+    return Response({"success": True, "message": "Device unblocked."})
 
 
 @api_view(["POST"])
 @permission_classes([IsAdminUser])
 def generate_vouchers(request):
-    """Generate batch voucher codes."""
-    import secrets
-    import string
-
+    """Generate a batch of voucher codes for a given package."""
     package_id = request.data.get("package_id")
     quantity = int(request.data.get("quantity", 1))
-    expires_at = request.data.get("expires_at")  # ISO datetime string
+    expires_at = request.data.get("expires_at")
 
-    if quantity < 1 or quantity > 100:
-        return Response({"error": "Quantity must be between 1 and 100."}, status=400)
+    if not 1 <= quantity <= 100:
+        return Response(
+            {"error": "Quantity must be between 1 and 100."},
+            status=400,
+        )
 
     try:
         package = Package.objects.get(id=package_id, is_active=True)
@@ -229,8 +238,8 @@ def generate_vouchers(request):
         return Response({"error": "Package not found."}, status=404)
 
     alphabet = string.ascii_uppercase + string.digits
-    codes = []
     vouchers = []
+    codes = []
 
     for _ in range(quantity):
         code = "".join(secrets.choice(alphabet) for _ in range(10))
@@ -246,16 +255,16 @@ def generate_vouchers(request):
 
     return Response({
         "success": True,
-        "vouchers": codes,
-        "package": package.name,
         "count": quantity,
+        "package": package.name,
+        "vouchers": codes,
     })
 
 
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def revenue_chart(request):
-    """Revenue data for the last N days (for charts)."""
+    """Daily revenue data for the last N days."""
     days = int(request.GET.get("days", 7))
     now = timezone.now()
     data = []
