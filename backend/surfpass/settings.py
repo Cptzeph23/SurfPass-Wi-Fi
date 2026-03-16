@@ -23,17 +23,17 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Third party
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
-    # Local apps
-    "apps.portal",
-    "apps.payments",
-    "apps.sessions",
-    "apps.devices",
-    "apps.admin_dashboard",
+    "django_celery_beat",
+    "apps.portal.apps.PortalConfig",
+    "apps.payments.apps.PaymentsConfig",
+    "apps.sessions.apps.SessionsConfig",
+    "apps.devices.apps.DevicesConfig",
+    "apps.admin_dashboard.apps.AdminDashboardConfig",
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -72,7 +72,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": env("DB_NAME", default="surfpass"),
-        "USER": env("DB_USER", default="surfpass"),
+        "USER": env("DB_USER", default="cptzeph"),
         "PASSWORD": env("DB_PASSWORD"),
         "HOST": env("DB_HOST", default="localhost"),
         "PORT": env("DB_PORT", default="5432"),
@@ -132,10 +132,10 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
         "anon": "60/minute",
         "user": "120/minute",
-        "payment": "10/minute",
     },
-    "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
-    "EXCEPTION_HANDLER": "surfpass.exceptions.custom_exception_handler",
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
 }
 
 SIMPLE_JWT = {
