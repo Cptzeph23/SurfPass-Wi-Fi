@@ -17,7 +17,6 @@
       --warn: #ff6b35;
       --text: #e8f4f8;
       --muted: #6b8fa3;
-      --card-glow: 0 0 40px rgba(0, 212, 255, 0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +29,6 @@
       overflow-x: hidden;
     }
 
-    /* Animated background grid */
     body::before {
       content: '';
       position: fixed;
@@ -43,32 +41,26 @@
       z-index: 0;
     }
 
-    .glow-orb {
+    .orb {
       position: fixed;
-      width: 600px;
-      height: 600px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
-      top: -200px;
-      right: -200px;
       pointer-events: none;
       z-index: 0;
     }
-    .glow-orb-2 {
-      position: fixed;
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,255,136,0.04) 0%, transparent 70%);
-      bottom: -100px;
-      left: -100px;
-      pointer-events: none;
-      z-index: 0;
+    .orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%);
+      top: -200px; right: -150px;
+    }
+    .orb-2 {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(0,255,136,0.05) 0%, transparent 70%);
+      bottom: -100px; left: -100px;
     }
 
     .app { position: relative; z-index: 1; }
 
-    /* ── Header ─────────────────────────────── */
+    /* ── Header ── */
     header {
       padding: 24px 24px 0;
       display: flex;
@@ -77,8 +69,7 @@
     }
 
     .logo-mark {
-      width: 44px;
-      height: 44px;
+      width: 42px; height: 42px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       border-radius: 12px;
       display: flex;
@@ -86,46 +77,43 @@
       justify-content: center;
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 18px;
+      font-size: 16px;
       color: #050a0e;
-      letter-spacing: -1px;
       flex-shrink: 0;
     }
 
-    .logo-text {
+    .logo-name {
       font-family: 'Syne', sans-serif;
       font-weight: 700;
-      font-size: 20px;
+      font-size: 18px;
       letter-spacing: -0.5px;
     }
+    .logo-name span { color: var(--accent); }
 
-    .logo-text span { color: var(--accent); }
-
-    /* ── Hero ────────────────────────────────── */
+    /* ── Hero ── */
     .hero {
-      padding: 48px 24px 32px;
+      padding: 44px 24px 28px;
       text-align: center;
     }
 
-    .hero-eyebrow {
+    .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       background: rgba(0,212,255,0.08);
       border: 1px solid rgba(0,212,255,0.2);
       border-radius: 100px;
-      padding: 6px 16px;
-      font-size: 12px;
+      padding: 5px 14px;
+      font-size: 11px;
       font-weight: 500;
       color: var(--accent);
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    .signal-dot {
-      width: 6px;
-      height: 6px;
+    .dot {
+      width: 6px; height: 6px;
       border-radius: 50%;
       background: var(--accent2);
       animation: pulse 2s infinite;
@@ -133,12 +121,12 @@
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.5); }
+      50% { opacity: 0.4; transform: scale(1.6); }
     }
 
     h1 {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(28px, 7vw, 40px);
+      font-size: clamp(26px, 7vw, 38px);
       font-weight: 800;
       line-height: 1.1;
       letter-spacing: -1.5px;
@@ -155,397 +143,368 @@
 
     .subtitle {
       color: var(--muted);
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.6;
-      max-width: 320px;
+      max-width: 300px;
       margin: 0 auto;
     }
 
-    /* ── Screen Manager ──────────────────────── */
+    /* ── Screens ── */
     .screen { display: none; }
     .screen.active { display: block; }
 
-    /* ── Loading ─────────────────────────────── */
-    #screen-loading { text-align: center; padding: 60px 24px; }
+    /* ── Loading ── */
+    #screen-loading {
+      text-align: center;
+      padding: 60px 24px;
+    }
 
     .spinner {
-      width: 48px;
-      height: 48px;
+      width: 44px; height: 44px;
       border: 3px solid var(--border);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
-      margin: 0 auto 16px;
+      margin: 0 auto 14px;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Packages ────────────────────────────── */
+    /* ── Packages ── */
     #screen-packages { padding: 0 16px 40px; }
 
-    .section-title {
+    .section-label {
       font-family: 'Syne', sans-serif;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--muted);
       text-align: center;
-      margin-bottom: 20px;
-      padding-top: 8px;
+      margin-bottom: 18px;
     }
 
     .packages-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      max-width: 440px;
+      gap: 10px;
+      max-width: 420px;
       margin: 0 auto;
     }
 
     .pkg-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 20px 16px;
+      border-radius: 18px;
+      padding: 18px 14px;
       cursor: pointer;
       transition: all 0.2s;
+      text-align: center;
       position: relative;
       overflow: hidden;
-      text-align: center;
     }
 
-    .pkg-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(0,212,255,0.06), transparent);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .pkg-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--card-glow); }
-    .pkg-card:hover::before { opacity: 1; }
-    .pkg-card.selected {
+    .pkg-card:hover {
       border-color: var(--accent);
-      background: rgba(0,212,255,0.06);
-      box-shadow: 0 0 0 1px var(--accent), var(--card-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0,212,255,0.08);
     }
 
-    .pkg-card.popular {
-      border-color: var(--accent2);
+    .pkg-card.featured {
       grid-column: span 2;
-      display: grid;
-      grid-template-columns: 1fr auto;
+      display: flex;
       align-items: center;
+      justify-content: space-between;
       text-align: left;
-      gap: 16px;
+      padding: 18px 20px;
+      border-color: rgba(0,255,136,0.3);
     }
 
-    .popular-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+    .pkg-card.featured:hover {
+      border-color: var(--accent2);
+      box-shadow: 0 0 30px rgba(0,255,136,0.08);
+    }
+
+    .badge-popular {
+      position: absolute;
+      top: 10px; right: 10px;
       background: rgba(0,255,136,0.1);
       border: 1px solid rgba(0,255,136,0.3);
       color: var(--accent2);
-      font-size: 10px;
-      font-weight: 600;
+      font-size: 9px;
+      font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 3px 10px;
+      padding: 2px 8px;
       border-radius: 100px;
-      position: absolute;
-      top: 12px;
-      right: 12px;
     }
 
     .pkg-duration {
       font-family: 'Syne', sans-serif;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
-      color: var(--text);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
-    .pkg-name {
-      font-size: 12px;
+    .pkg-label {
+      font-size: 11px;
       color: var(--muted);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .pkg-price {
       font-family: 'Syne', sans-serif;
       font-weight: 700;
-      font-size: 20px;
+      font-size: 18px;
       color: var(--accent);
     }
 
-    .pkg-price sup {
-      font-size: 12px;
-      vertical-align: super;
-    }
+    .pkg-price sup { font-size: 11px; vertical-align: super; }
 
-    .pkg-select-btn {
+    .btn-select {
       background: linear-gradient(135deg, var(--accent), #0099bb);
       color: #050a0e;
       border: none;
-      border-radius: 12px;
-      padding: 12px 24px;
+      border-radius: 10px;
+      padding: 10px 20px;
       font-family: 'Syne', sans-serif;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.2s;
+      transition: transform 0.15s;
+      flex-shrink: 0;
     }
 
-    .pkg-select-btn:hover { transform: scale(1.04); }
+    .btn-select:hover { transform: scale(1.04); }
 
-    /* ── Voucher section ─────────────────────── */
-    .voucher-section {
-      max-width: 440px;
-      margin: 24px auto 0;
-      padding: 0 16px;
+    /* ── Voucher ── */
+    .voucher-wrap {
+      max-width: 420px;
+      margin: 20px auto 0;
     }
 
     .voucher-toggle {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
-      padding: 12px;
-      border-radius: 12px;
-      transition: color 0.2s;
+      padding: 10px;
+      transition: color 0.15s;
     }
-
     .voucher-toggle:hover { color: var(--accent); }
 
-    .voucher-form {
+    .voucher-row {
       display: none;
-      margin-top: 12px;
+      gap: 8px;
+      margin-top: 10px;
     }
+    .voucher-row.open { display: flex; }
 
-    .voucher-form.open { display: flex; gap: 8px; }
-
-    .input-field {
+    .field {
       flex: 1;
       background: var(--surface2);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 16px;
+      border-radius: 10px;
+      padding: 11px 14px;
       color: var(--text);
       font-family: 'DM Sans', sans-serif;
       font-size: 14px;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.15s;
     }
-
-    .input-field:focus { border-color: var(--accent); }
-    .input-field::placeholder { color: var(--muted); }
+    .field:focus { border-color: var(--accent); }
+    .field::placeholder { color: var(--muted); }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), #0099bb);
       color: #050a0e;
       border: none;
-      border-radius: 12px;
-      padding: 12px 20px;
+      border-radius: 10px;
+      padding: 11px 18px;
       font-family: 'Syne', sans-serif;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
-      transition: all 0.2s;
       white-space: nowrap;
+      transition: transform 0.15s;
     }
-
     .btn-primary:hover:not(:disabled) { transform: scale(1.03); }
     .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* ── Payment screen ──────────────────────── */
-    #screen-payment { padding: 24px 16px 40px; }
+    /* ── Payment ── */
+    #screen-payment { padding: 20px 16px 40px; }
 
-    .payment-card {
+    .card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 28px 24px;
+      border-radius: 22px;
+      padding: 26px 22px;
       max-width: 400px;
       margin: 0 auto;
     }
 
-    .payment-header {
+    .card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
-    .back-btn {
+    .btn-back {
       background: var(--surface2);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 9px;
       color: var(--muted);
-      padding: 8px 14px;
-      font-size: 13px;
+      padding: 7px 13px;
+      font-size: 12px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
+    .btn-back:hover { color: var(--text); border-color: var(--muted); }
 
-    .back-btn:hover { color: var(--text); border-color: var(--muted); }
-
-    .selected-pkg-badge {
+    .pkg-chip {
       background: rgba(0,212,255,0.1);
       border: 1px solid rgba(0,212,255,0.25);
-      border-radius: 10px;
-      padding: 6px 14px;
-      font-size: 13px;
+      border-radius: 9px;
+      padding: 5px 12px;
+      font-size: 12px;
       color: var(--accent);
       font-weight: 500;
     }
 
-    .payment-title {
+    .card-title {
       font-family: 'Syne', sans-serif;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
-    .payment-amount {
+    .card-sub {
       color: var(--muted);
-      margin-bottom: 24px;
-      font-size: 14px;
+      font-size: 13px;
+      margin-bottom: 22px;
     }
 
-    .amount-highlight {
-      color: var(--accent2);
-      font-weight: 600;
-    }
+    .amount-hl { color: var(--accent2); font-weight: 600; }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    label {
-      display: block;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      color: var(--muted);
-      margin-bottom: 8px;
-      text-transform: uppercase;
-    }
-
-    .phone-input-wrap {
+    .mpesa-box {
       display: flex;
-      gap: 0;
-      border: 1px solid var(--border);
+      align-items: center;
+      gap: 12px;
+      background: rgba(0,168,80,0.06);
+      border: 1px solid rgba(0,168,80,0.2);
       border-radius: 12px;
-      overflow: hidden;
-      transition: border-color 0.2s;
+      padding: 12px 14px;
+      margin-bottom: 18px;
     }
 
-    .phone-input-wrap:focus-within { border-color: var(--accent); }
+    .mpesa-badge {
+      width: 36px; height: 36px;
+      background: #00a850;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .mpesa-text strong { display: block; font-size: 13px; }
+    .mpesa-text span { font-size: 12px; color: var(--muted); }
+
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    .phone-wrap {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      overflow: hidden;
+      transition: border-color 0.15s;
+      margin-bottom: 18px;
+    }
+    .phone-wrap:focus-within { border-color: var(--accent); }
 
     .phone-prefix {
       background: var(--surface2);
       color: var(--muted);
-      padding: 12px 14px;
-      font-size: 14px;
+      padding: 12px 13px;
+      font-size: 13px;
       border-right: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 6px;
       white-space: nowrap;
     }
 
-    .phone-input-wrap input {
+    .phone-wrap input {
       flex: 1;
       background: var(--surface2);
       border: none;
-      padding: 12px 14px;
+      padding: 12px 13px;
       color: var(--text);
       font-family: 'DM Sans', sans-serif;
       font-size: 15px;
       outline: none;
     }
 
-    .mpesa-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(0,255,136,0.05);
-      border: 1px solid rgba(0,255,136,0.15);
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 20px;
-    }
-
-    .mpesa-icon {
-      width: 36px;
-      height: 36px;
-      background: #00a850;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 12px;
-      color: white;
-      letter-spacing: -0.5px;
-    }
-
-    .mpesa-info { font-size: 13px; }
-    .mpesa-info strong { display: block; color: var(--text); font-size: 14px; }
-    .mpesa-info span { color: var(--muted); }
-
     .btn-pay {
       width: 100%;
       background: linear-gradient(135deg, #00a850, #006632);
       color: white;
       border: none;
-      border-radius: 14px;
-      padding: 16px;
+      border-radius: 13px;
+      padding: 15px;
       font-family: 'Syne', sans-serif;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
       transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
+    .btn-pay:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,168,80,0.3);
+    }
+    .btn-pay:disabled { opacity: 0.55; cursor: not-allowed; }
 
-    .btn-pay:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,168,80,0.3); }
-    .btn-pay:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .error-msg {
+    .err {
       color: var(--warn);
-      font-size: 13px;
-      margin-top: 8px;
+      font-size: 12px;
+      margin-top: -12px;
+      margin-bottom: 14px;
       display: none;
     }
 
-    /* ── Waiting screen ──────────────────────── */
-    #screen-waiting { padding: 24px 16px 40px; text-align: center; }
+    /* ── Waiting ── */
+    #screen-waiting { padding: 20px 16px 40px; text-align: center; }
 
     .waiting-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 40px 24px;
-      max-width: 360px;
+      border-radius: 22px;
+      padding: 36px 22px;
+      max-width: 340px;
       margin: 0 auto;
     }
 
-    .waiting-animation {
+    .spin-wrap {
       position: relative;
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 24px;
+      width: 76px; height: 76px;
+      margin: 0 auto 22px;
     }
 
     .ring {
@@ -554,21 +513,16 @@
       border: 3px solid transparent;
       border-radius: 50%;
     }
+    .ring-a { border-top-color: var(--accent); animation: spin 1s linear infinite; }
+    .ring-b { inset: 9px; border-top-color: var(--accent2); animation: spin 1.4s linear infinite reverse; }
 
-    .ring-1 { border-top-color: var(--accent); animation: spin 1s linear infinite; }
-    .ring-2 { inset: 8px; border-top-color: var(--accent2); animation: spin 1.5s linear infinite reverse; }
-
-    .mpesa-center {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .spin-center {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    .mpesa-center-icon {
-      width: 44px;
-      height: 44px;
+    .spin-icon {
+      width: 42px; height: 42px;
       background: #00a850;
       border-radius: 50%;
       display: flex;
@@ -581,123 +535,125 @@
 
     .waiting-title {
       font-family: 'Syne', sans-serif;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
       margin-bottom: 8px;
     }
 
-    .waiting-desc { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
+    .waiting-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
     .waiting-phone { color: var(--accent); font-weight: 600; }
 
-    .status-steps { text-align: left; margin-bottom: 24px; }
+    .steps { text-align: left; margin-bottom: 22px; }
 
     .step {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 0;
+      gap: 10px;
+      padding: 9px 0;
       border-bottom: 1px solid var(--border);
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
+      transition: color 0.3s;
     }
-
     .step:last-child { border-bottom: none; }
     .step.done { color: var(--text); }
-    .step.done .step-dot { background: var(--accent2); }
     .step.active { color: var(--accent); }
-    .step.active .step-dot { background: var(--accent); animation: pulse 1s infinite; }
 
     .step-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px; height: 7px;
       border-radius: 50%;
       background: var(--border);
       flex-shrink: 0;
+      transition: background 0.3s;
     }
+    .step.done .step-dot { background: var(--accent2); }
+    .step.active .step-dot { background: var(--accent); animation: pulse 1s infinite; }
 
-    .btn-cancel-wait {
+    .btn-cancel {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--muted);
-      border-radius: 12px;
-      padding: 12px 24px;
-      font-size: 14px;
+      border-radius: 10px;
+      padding: 10px 22px;
+      font-size: 13px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
+    .btn-cancel:hover { border-color: var(--warn); color: var(--warn); }
 
-    .btn-cancel-wait:hover { border-color: var(--warn); color: var(--warn); }
-
-    /* ── Success screen ──────────────────────── */
-    #screen-success { padding: 24px 16px 40px; text-align: center; }
+    /* ── Success ── */
+    #screen-success { padding: 20px 16px 40px; text-align: center; }
 
     .success-card {
       background: var(--surface);
       border: 1px solid rgba(0,255,136,0.3);
-      border-radius: 24px;
-      padding: 40px 24px;
-      max-width: 360px;
+      border-radius: 22px;
+      padding: 36px 22px;
+      max-width: 340px;
       margin: 0 auto;
-      box-shadow: 0 0 60px rgba(0,255,136,0.06);
+      box-shadow: 0 0 50px rgba(0,255,136,0.06);
     }
 
-    .success-icon {
-      width: 72px;
-      height: 72px;
-      background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,255,136,0.05));
+    .check-icon {
+      width: 66px; height: 66px;
+      background: rgba(0,255,136,0.1);
       border: 2px solid rgba(0,255,136,0.4);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 30px;
-      animation: pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      margin: 0 auto 18px;
+      font-size: 28px;
+      animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1);
     }
 
-    @keyframes pop-in {
+    @keyframes pop {
       from { transform: scale(0); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
 
     .success-title {
       font-family: 'Syne', sans-serif;
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 800;
       color: var(--accent2);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
-    .success-subtitle { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+    .success-sub { color: var(--muted); font-size: 13px; margin-bottom: 22px; }
 
-    .session-info {
+    .info-box {
       background: var(--surface2);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 24px;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 20px;
       text-align: left;
     }
 
-    .session-row {
+    .info-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 0;
+      padding: 7px 0;
       border-bottom: 1px solid var(--border);
-      font-size: 14px;
+      font-size: 13px;
     }
-
-    .session-row:last-child { border-bottom: none; }
-    .session-row span:first-child { color: var(--muted); }
-    .session-row span:last-child { font-weight: 500; }
+    .info-row:last-child { border-bottom: none; }
+    .info-row span:first-child { color: var(--muted); }
+    .info-row span:last-child { font-weight: 500; }
 
     .countdown {
       font-family: 'Syne', sans-serif;
-      font-size: 28px;
+      font-size: 22px;
       font-weight: 800;
       color: var(--accent);
-      margin: 0;
     }
 
     .btn-browse {
@@ -705,98 +661,81 @@
       background: linear-gradient(135deg, var(--accent2), #00b864);
       color: #050a0e;
       border: none;
-      border-radius: 14px;
-      padding: 16px;
+      border-radius: 13px;
+      padding: 15px;
       font-family: 'Syne', sans-serif;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
       transition: all 0.2s;
     }
-
-    .btn-browse:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,255,136,0.25); }
-
-    /* ── Already connected screen ─────────────── */
-    #screen-connected { padding: 24px 16px 40px; text-align: center; }
-
-    .connected-card {
-      background: var(--surface);
-      border: 1px solid rgba(0,212,255,0.3);
-      border-radius: 24px;
-      padding: 40px 24px;
-      max-width: 360px;
-      margin: 0 auto;
+    .btn-browse:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,255,136,0.25);
     }
 
-    .wifi-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-      display: block;
-    }
+    /* ── Connected ── */
+    #screen-connected { padding: 20px 16px 40px; text-align: center; }
 
-    /* ── Toast ───────────────────────────────── */
+    /* ── Toast ── */
     .toast {
       position: fixed;
-      bottom: 24px;
+      bottom: 20px;
       left: 50%;
-      transform: translateX(-50%) translateY(100px);
+      transform: translateX(-50%) translateY(80px);
       background: var(--surface2);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 20px;
-      font-size: 14px;
+      border-radius: 12px;
+      padding: 11px 18px;
+      font-size: 13px;
       transition: transform 0.3s;
       z-index: 100;
       white-space: nowrap;
-      max-width: 90vw;
+      max-width: 88vw;
     }
-
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast.success { border-color: rgba(0,255,136,0.4); color: var(--accent2); }
     .toast.error { border-color: rgba(255,107,53,0.4); color: var(--warn); }
   </style>
 </head>
 <body>
-<div class="glow-orb"></div>
-<div class="glow-orb-2"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
 <div class="app">
   <header>
     <div class="logo-mark">SP</div>
-    <div class="logo-text">Surf<span>Pass</span> WiFi</div>
+    <div class="logo-name">Surf<span>Pass</span> WiFi</div>
   </header>
 
   <div class="hero">
-    <div class="hero-eyebrow">
-      <div class="signal-dot"></div>
-      Free WiFi Hotspot
-    </div>
+    <div class="eyebrow"><div class="dot"></div> Free Hotspot</div>
     <h1>Sign in to<br><em>access internet</em></h1>
-    <p class="subtitle">Choose a package, pay via M-Pesa, and get instant WiFi access.</p>
+    <p class="subtitle">Select a package, pay with M-Pesa, get instant WiFi access.</p>
   </div>
 
   <!-- Loading -->
   <div id="screen-loading" class="screen active">
     <div class="spinner"></div>
-    <p style="color:var(--muted); font-size:14px;">Detecting your device...</p>
+    <p style="color:var(--muted);font-size:13px">Detecting your device...</p>
   </div>
 
-  <!-- Already Connected -->
+  <!-- Already connected -->
   <div id="screen-connected" class="screen">
-    <div class="connected-card">
-      <span class="wifi-icon">📶</span>
-      <div class="success-title" style="color:var(--accent)">You're Connected!</div>
-      <p class="success-subtitle">Your internet session is active.</p>
-      <div class="session-info">
-        <div class="session-row">
+    <div class="success-card">
+      <div style="font-size:44px;margin-bottom:14px">📶</div>
+      <div class="success-title" style="color:var(--accent)">You're Online!</div>
+      <p class="success-sub">Your session is active.</p>
+      <div class="info-box">
+        <div class="info-row">
           <span>Package</span>
-          <span id="conn-package">—</span>
+          <span id="conn-pkg">—</span>
         </div>
-        <div class="session-row">
+        <div class="info-row">
           <span>Time Remaining</span>
           <span class="countdown" id="conn-timer">—</span>
         </div>
-        <div class="session-row">
+        <div class="info-row">
           <span>Expires</span>
           <span id="conn-expiry">—</span>
         </div>
@@ -809,16 +748,16 @@
 
   <!-- Packages -->
   <div id="screen-packages" class="screen">
-    <p class="section-title">Choose a Package</p>
-    <div class="packages-grid" id="packages-grid">
-      <!-- Injected by JS -->
-    </div>
-    <div class="voucher-section">
+    <p class="section-label">Choose a Package</p>
+    <div class="packages-grid" id="packages-grid"></div>
+    <div class="voucher-wrap">
       <div class="voucher-toggle" onclick="toggleVoucher()">
         🎟️ Have a voucher code?
       </div>
-      <div class="voucher-form" id="voucher-form">
-        <input type="text" class="input-field" id="voucher-input" placeholder="Enter code (e.g. ABCD123456)" style="text-transform:uppercase" />
+      <div class="voucher-row" id="voucher-row">
+        <input type="text" class="field" id="voucher-input"
+          placeholder="Enter code e.g. ABCD123456"
+          style="text-transform:uppercase" />
         <button class="btn-primary" onclick="redeemVoucher()">Redeem</button>
       </div>
     </div>
@@ -826,80 +765,87 @@
 
   <!-- Payment -->
   <div id="screen-payment" class="screen">
-    <div class="payment-card">
-      <div class="payment-header">
-        <button class="back-btn" onclick="showScreen('packages')">← Back</button>
-        <div class="selected-pkg-badge" id="pay-pkg-badge">1 Hour</div>
+    <div class="card">
+      <div class="card-header">
+        <button class="btn-back" onclick="showScreen('packages')">← Back</button>
+        <div class="pkg-chip" id="pay-chip">—</div>
       </div>
-      <div class="payment-title">Pay via M-Pesa</div>
-      <p class="payment-amount">You'll be charged <span class="amount-highlight" id="pay-amount">KES 10</span></p>
-
-      <div class="mpesa-logo">
-        <div class="mpesa-icon">M</div>
-        <div class="mpesa-info">
+      <div class="card-title">Pay via M-Pesa</div>
+      <p class="card-sub">
+        You will be charged <span class="amount-hl" id="pay-amount">KES 0</span>
+      </p>
+      <div class="mpesa-box">
+        <div class="mpesa-badge">M</div>
+        <div class="mpesa-text">
           <strong>M-Pesa STK Push</strong>
           <span>Enter PIN on your phone to confirm</span>
         </div>
       </div>
-
-      <div class="form-group">
-        <label>M-Pesa Phone Number</label>
-        <div class="phone-input-wrap">
-          <div class="phone-prefix">🇰🇪 +254</div>
-          <input type="tel" id="phone-input" placeholder="7XXXXXXXX" maxlength="9" inputmode="numeric" />
-        </div>
-        <div class="error-msg" id="phone-error">Please enter a valid phone number.</div>
+      <label class="form-label">M-Pesa Phone Number</label>
+      <div class="phone-wrap">
+        <div class="phone-prefix">🇰🇪 +254</div>
+        <input type="tel" id="phone-input"
+          placeholder="7XXXXXXXX"
+          maxlength="9"
+          inputmode="numeric" />
       </div>
-
+      <div class="err" id="phone-err">Enter a valid Kenyan phone number.</div>
       <button class="btn-pay" id="btn-pay" onclick="initiatePayment()">
-        <span>💚</span>
-        <span>Send STK Push</span>
+        <span>💚</span><span>Send STK Push</span>
       </button>
     </div>
   </div>
 
-  <!-- Waiting for payment -->
+  <!-- Waiting -->
   <div id="screen-waiting" class="screen">
     <div class="waiting-card">
-      <div class="waiting-animation">
-        <div class="ring ring-1"></div>
-        <div class="ring ring-2"></div>
-        <div class="mpesa-center">
-          <div class="mpesa-center-icon">M-P</div>
+      <div class="spin-wrap">
+        <div class="ring ring-a"></div>
+        <div class="ring ring-b"></div>
+        <div class="spin-center">
+          <div class="spin-icon">M-P</div>
         </div>
       </div>
       <div class="waiting-title">Waiting for Payment</div>
       <p class="waiting-desc">
-        An M-Pesa prompt has been sent to<br>
-        <span class="waiting-phone" id="waiting-phone">+254 7XX XXX XXX</span>
+        M-Pesa prompt sent to<br>
+        <span class="waiting-phone" id="wait-phone">+254 7XX XXX XXX</span>
       </p>
-      <div class="status-steps">
-        <div class="step done" id="step-sent"><div class="step-dot"></div> STK Push sent to your phone</div>
-        <div class="step active" id="step-pin"><div class="step-dot"></div> Waiting for PIN confirmation</div>
-        <div class="step" id="step-verify"><div class="step-dot"></div> Verifying payment</div>
-        <div class="step" id="step-access"><div class="step-dot"></div> Granting internet access</div>
+      <div class="steps">
+        <div class="step done" id="s-sent">
+          <div class="step-dot"></div> STK Push sent to your phone
+        </div>
+        <div class="step active" id="s-pin">
+          <div class="step-dot"></div> Waiting for PIN confirmation
+        </div>
+        <div class="step" id="s-verify">
+          <div class="step-dot"></div> Verifying payment
+        </div>
+        <div class="step" id="s-access">
+          <div class="step-dot"></div> Granting internet access
+        </div>
       </div>
-      <button class="btn-cancel-wait" onclick="cancelWaiting()">Cancel</button>
+      <button class="btn-cancel" onclick="cancelWaiting()">Cancel</button>
     </div>
   </div>
 
   <!-- Success -->
   <div id="screen-success" class="screen">
     <div class="success-card">
-      <div class="success-icon">✓</div>
+      <div class="check-icon">✓</div>
       <div class="success-title">Payment Confirmed!</div>
-      <p class="success-subtitle">You now have internet access. Enjoy!</p>
-      <div class="session-info">
-        <div class="session-row">
+      <p class="success-sub">You now have internet access. Enjoy!</p>
+      <div class="info-box">
+        <div class="info-row">
           <span>Package</span>
-          <span id="suc-package">—</span>
+          <span id="suc-pkg">—</span>
         </div>
-        <div class="session-row">
+        <div class="info-row">
           <span>Time Remaining</span>
           <span class="countdown" id="suc-timer">—</span>
         </div>
-        <div class="session-row">
-          <span>Receipt</span>
+        <div class="info-row">
+          <span>M-Pesa Receipt</span>
           <span id="suc-receipt">—</span>
         </div>
       </div>
@@ -913,280 +859,237 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const API_BASE = '/api/v1';
-let state = {
-  mac: null,
-  selectedPackage: null,
-  paymentId: null,
-  pollInterval: null,
-  countdownInterval: null,
-  sessionExpiry: null,
-};
+  const API = '/api/v1';
+  const state = {
+    mac: null,
+    pkg: null,
+    paymentId: null,
+    pollTimer: null,
+    countdownTimer: null,
+  };
 
-// ── Boot ────────────────────────────────────────────────────────────────────
-async function boot() {
-  const mac = getMacFromURL();
-  state.mac = mac;
-
-  try {
-    const res = await fetch(`${API_BASE}/portal/status/?mac=${mac || ''}`);
-    const data = await res.json();
-
-    if (data.has_access && data.session) {
-      showConnectedScreen(data.session);
-    } else {
-      await loadPackages();
-      showScreen('packages');
-    }
-  } catch (e) {
-    console.error(e);
-    await loadPackages();
-    showScreen('packages');
-  }
-}
-
-function getMacFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('mac') || '';
-}
-
-// ── Packages ────────────────────────────────────────────────────────────────
-async function loadPackages() {
-  try {
-    const res = await fetch(`${API_BASE}/portal/packages/`);
-    const data = await res.json();
-    renderPackages(data.packages || []);
-  } catch (e) {
-    // Fallback demo packages
-    renderPackages([
-      { id: 'pkg-1', name: 'Quick Browse', price: 10, duration_display: '1 Hour', duration_minutes: 60 },
-      { id: 'pkg-2', name: 'Standard', price: 20, duration_display: '3 Hours', duration_minutes: 180 },
-      { id: 'pkg-3', name: 'Half Day', price: 50, duration_display: '6 Hours', duration_minutes: 360, popular: true },
-      { id: 'pkg-4', name: 'Full Day', price: 100, duration_display: '24 Hours', duration_minutes: 1440 },
-    ]);
-  }
-}
-
-function renderPackages(packages) {
-  const grid = document.getElementById('packages-grid');
-  grid.innerHTML = '';
-
-  packages.forEach((pkg, i) => {
-    const isPopular = pkg.popular || pkg.duration_minutes === 360;
-    const card = document.createElement('div');
-    card.className = `pkg-card${isPopular ? ' popular' : ''}`;
-    card.dataset.id = pkg.id;
-    card.dataset.pkg = JSON.stringify(pkg);
-    card.onclick = () => selectPackage(pkg);
-
-    if (isPopular) {
-      card.innerHTML = `
-        <div>
-          <div class="pkg-duration">${pkg.duration_display}</div>
-          <div class="pkg-name">${pkg.name}</div>
-          <div class="pkg-price"><sup>KES</sup>${pkg.price}</div>
-        </div>
-        <button class="pkg-select-btn" onclick="event.stopPropagation();selectPackage(${JSON.stringify(pkg).replace(/"/g,'&quot;')})">
-          Select →
-        </button>
-        <div class="popular-badge">⚡ Popular</div>
-      `;
-    } else {
-      card.innerHTML = `
-        <div class="pkg-duration">${pkg.duration_display}</div>
-        <div class="pkg-name">${pkg.name}</div>
-        <div class="pkg-price"><sup>KES</sup>${pkg.price}</div>
-      `;
-    }
-
-    grid.appendChild(card);
-  });
-}
-
-function selectPackage(pkg) {
-  state.selectedPackage = pkg;
-  document.getElementById('pay-pkg-badge').textContent = pkg.duration_display;
-  document.getElementById('pay-amount').textContent = `KES ${pkg.price}`;
-  showScreen('payment');
-}
-
-// ── Voucher ──────────────────────────────────────────────────────────────────
-function toggleVoucher() {
-  const form = document.getElementById('voucher-form');
-  form.classList.toggle('open');
-}
-
-async function redeemVoucher() {
-  const code = document.getElementById('voucher-input').value.trim();
-  if (!code) return showToast('Please enter a voucher code.', 'error');
-
-  try {
-    const res = await fetch(`${API_BASE}/portal/voucher/redeem/`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code, mac: state.mac }),
-    });
-    const data = await res.json();
-
-    if (data.success) {
-      showSuccessScreen(data.session, 'VOUCHER');
-    } else {
-      showToast(data.error || 'Invalid voucher.', 'error');
-    }
-  } catch (e) {
-    showToast('Error redeeming voucher.', 'error');
-  }
-}
-
-// ── Payment ──────────────────────────────────────────────────────────────────
-async function initiatePayment() {
-  const rawPhone = document.getElementById('phone-input').value.trim();
-  const errorEl = document.getElementById('phone-error');
-
-  if (!/^[71]\d{8}$/.test(rawPhone)) {
-    errorEl.style.display = 'block';
-    return;
-  }
-  errorEl.style.display = 'none';
-
-  const btn = document.getElementById('btn-pay');
-  btn.disabled = true;
-  btn.innerHTML = '<span>⏳</span><span>Sending request...</span>';
-
-  const phone = `0${rawPhone}`;
-
-  try {
-    const res = await fetch(`${API_BASE}/payments/initiate/`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        package_id: state.selectedPackage.id,
-        phone_number: phone,
-        mac: state.mac,
-      }),
-    });
-    const data = await res.json();
-
-    if (data.success) {
-      state.paymentId = data.payment_id;
-      document.getElementById('waiting-phone').textContent = `+254 ${rawPhone}`;
-      showScreen('waiting');
-      startPolling();
-    } else {
-      showToast(data.error || 'Payment failed. Try again.', 'error');
-    }
-  } catch (e) {
-    showToast('Connection error. Please try again.', 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<span>💚</span><span>Send STK Push</span>';
-  }
-}
-
-function startPolling() {
-  let attempts = 0;
-  const maxAttempts = 24; // 2 minutes
-
-  state.pollInterval = setInterval(async () => {
-    attempts++;
-
+  // ── Boot ──────────────────────────────────────────────────────────────────
+  async function boot() {
+    state.mac = new URLSearchParams(window.location.search).get('mac') || '';
     try {
-      const res = await fetch(`${API_BASE}/payments/status/${state.paymentId}/?mac=${state.mac}`);
+      const res = await fetch(`${API}/portal/status/?mac=${state.mac}`);
       const data = await res.json();
-
-      if (data.status === 'completed' && data.session) {
-        clearInterval(state.pollInterval);
-        updateWaitingSteps('verify');
-        setTimeout(() => {
-          updateWaitingSteps('access');
-          setTimeout(() => showSuccessScreen(data.session, data.receipt), 800);
-        }, 600);
-
-      } else if (data.status === 'failed' || data.status === 'cancelled') {
-        clearInterval(state.pollInterval);
-        showToast(data.failure_reason || 'Payment was not completed.', 'error');
-        showScreen('packages');
-      } else if (attempts >= maxAttempts) {
-        clearInterval(state.pollInterval);
-        showToast('Payment timed out. Please try again.', 'error');
+      if (data.has_access && data.session) {
+        showConnected(data.session);
+      } else {
+        await loadPackages();
         showScreen('packages');
       }
     } catch (e) {
-      console.error('Polling error:', e);
+      await loadPackages();
+      showScreen('packages');
     }
-  }, 5000);
-}
-
-function updateWaitingSteps(active) {
-  const steps = ['sent', 'pin', 'verify', 'access'];
-  const order = steps.indexOf(active);
-  steps.forEach((s, i) => {
-    const el = document.getElementById(`step-${s}`);
-    if (i < order) { el.className = 'step done'; }
-    else if (i === order) { el.className = 'step active'; }
-    else { el.className = 'step'; }
-  });
-}
-
-function cancelWaiting() {
-  clearInterval(state.pollInterval);
-  showScreen('packages');
-}
-
-// ── Screens ───────────────────────────────────────────────────────────────────
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(`screen-${name}`).classList.add('active');
-}
-
-function showConnectedScreen(session) {
-  document.getElementById('conn-package').textContent = session.package_name;
-  document.getElementById('conn-expiry').textContent = new Date(session.expiry_time).toLocaleTimeString();
-  startCountdown('conn-timer', session.time_remaining_seconds);
-  showScreen('connected');
-}
-
-function showSuccessScreen(session, receipt) {
-  document.getElementById('suc-package').textContent = session.package_name;
-  document.getElementById('suc-receipt').textContent = receipt || 'N/A';
-  startCountdown('suc-timer', session.time_remaining_seconds);
-  showScreen('success');
-}
-
-function startCountdown(elementId, seconds) {
-  clearInterval(state.countdownInterval);
-  const el = document.getElementById(elementId);
-  let remaining = seconds;
-
-  function update() {
-    const h = Math.floor(remaining / 3600);
-    const m = Math.floor((remaining % 3600) / 60);
-    const s = remaining % 60;
-    if (h > 0) el.textContent = `${h}h ${m}m`;
-    else if (m > 0) el.textContent = `${m}m ${s}s`;
-    else el.textContent = `${s}s`;
-    if (remaining <= 0) {
-      clearInterval(state.countdownInterval);
-      el.textContent = 'Expired';
-      setTimeout(boot, 2000);
-    }
-    remaining--;
   }
 
-  update();
-  state.countdownInterval = setInterval(update, 1000);
-}
+  // ── Packages ──────────────────────────────────────────────────────────────
+  async function loadPackages() {
+    try {
+      const res = await fetch(`${API}/portal/packages/`);
+      const data = await res.json();
+      renderPackages(data.packages || []);
+    } catch (e) {
+      renderPackages([
+        {id:'p1',name:'Quick Browse',price:10,duration_display:'1 Hour',duration_minutes:60},
+        {id:'p2',name:'Standard',price:20,duration_display:'3 Hours',duration_minutes:180},
+        {id:'p3',name:'Half Day',price:50,duration_display:'6 Hours',duration_minutes:360,featured:true},
+        {id:'p4',name:'Full Day',price:100,duration_display:'24 Hours',duration_minutes:1440},
+      ]);
+    }
+  }
 
-// ── Toast ─────────────────────────────────────────────────────────────────────
-function showToast(msg, type = 'info') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast ${type} show`;
-  setTimeout(() => t.classList.remove('show'), 3500);
-}
+  function renderPackages(pkgs) {
+    const grid = document.getElementById('packages-grid');
+    grid.innerHTML = '';
+    pkgs.forEach(p => {
+      const featured = p.featured || p.duration_minutes === 360;
+      const card = document.createElement('div');
+      card.className = 'pkg-card' + (featured ? ' featured' : '');
+      card.onclick = () => goToPayment(p);
+      if (featured) {
+        card.innerHTML = `
+          <div>
+            <div class="pkg-duration">${p.duration_display}</div>
+            <div class="pkg-label">${p.name}</div>
+            <div class="pkg-price"><sup>KES</sup>${p.price}</div>
+          </div>
+          <button class="btn-select"
+            onclick="event.stopPropagation();goToPayment(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+            Select →
+          </button>
+          <div class="badge-popular">⚡ Popular</div>`;
+      } else {
+        card.innerHTML = `
+          <div class="pkg-duration">${p.duration_display}</div>
+          <div class="pkg-label">${p.name}</div>
+          <div class="pkg-price"><sup>KES</sup>${p.price}</div>`;
+      }
+      grid.appendChild(card);
+    });
+  }
 
-// ── Init ──────────────────────────────────────────────────────────────────────
-boot();
+  function goToPayment(pkg) {
+    state.pkg = pkg;
+    document.getElementById('pay-chip').textContent = pkg.duration_display;
+    document.getElementById('pay-amount').textContent = `KES ${pkg.price}`;
+    showScreen('payment');
+  }
+
+  // ── Voucher ───────────────────────────────────────────────────────────────
+  function toggleVoucher() {
+    document.getElementById('voucher-row').classList.toggle('open');
+  }
+
+  async function redeemVoucher() {
+    const code = document.getElementById('voucher-input').value.trim();
+    if (!code) return toast('Enter a voucher code.', 'error');
+    try {
+      const res = await fetch(`${API}/portal/voucher/redeem/`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({code, mac: state.mac}),
+      });
+      const data = await res.json();
+      if (data.success) showSuccess(data.session, 'VOUCHER');
+      else toast(data.error || 'Invalid voucher.', 'error');
+    } catch (e) { toast('Error redeeming voucher.', 'error'); }
+  }
+
+  // ── Payment ───────────────────────────────────────────────────────────────
+  async function initiatePayment() {
+    const raw = document.getElementById('phone-input').value.trim();
+    const errEl = document.getElementById('phone-err');
+    if (!/^[71]\d{8}$/.test(raw)) {
+      errEl.style.display = 'block';
+      return;
+    }
+    errEl.style.display = 'none';
+
+    const btn = document.getElementById('btn-pay');
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳</span><span>Sending...</span>';
+
+    try {
+      const res = await fetch(`${API}/payments/initiate/`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          package_id: state.pkg.id,
+          phone_number: '0' + raw,
+          mac: state.mac,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        state.paymentId = data.payment_id;
+        document.getElementById('wait-phone').textContent = '+254 ' + raw;
+        showScreen('waiting');
+        startPolling();
+      } else {
+        toast(data.error || 'Payment failed.', 'error');
+      }
+    } catch (e) {
+      toast('Connection error. Try again.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<span>💚</span><span>Send STK Push</span>';
+    }
+  }
+
+  // ── Polling ───────────────────────────────────────────────────────────────
+  function startPolling() {
+    let tries = 0;
+    state.pollTimer = setInterval(async () => {
+      tries++;
+      try {
+        const res = await fetch(
+          `${API}/payments/status/${state.paymentId}/?mac=${state.mac}`
+        );
+        const data = await res.json();
+        if (data.status === 'completed' && data.session) {
+          clearInterval(state.pollTimer);
+          setStep('verify');
+          setTimeout(() => {
+            setStep('access');
+            setTimeout(() => showSuccess(data.session, data.receipt), 800);
+          }, 600);
+        } else if (data.status === 'failed' || data.status === 'cancelled') {
+          clearInterval(state.pollTimer);
+          toast(data.failure_reason || 'Payment not completed.', 'error');
+          showScreen('packages');
+        } else if (tries >= 24) {
+          clearInterval(state.pollTimer);
+          toast('Payment timed out. Try again.', 'error');
+          showScreen('packages');
+        }
+      } catch (e) {}
+    }, 5000);
+  }
+
+  function setStep(active) {
+    const order = ['sent','pin','verify','access'];
+    const idx = order.indexOf(active);
+    order.forEach((s, i) => {
+      const el = document.getElementById('s-' + s);
+      el.className = 'step ' + (i < idx ? 'done' : i === idx ? 'active' : '');
+    });
+  }
+
+  function cancelWaiting() {
+    clearInterval(state.pollTimer);
+    showScreen('packages');
+  }
+
+  // ── Screens ───────────────────────────────────────────────────────────────
+  function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+  }
+
+  function showConnected(session) {
+    document.getElementById('conn-pkg').textContent = session.package_name;
+    document.getElementById('conn-expiry').textContent =
+      new Date(session.expiry_time).toLocaleTimeString();
+    startCountdown('conn-timer', session.time_remaining_seconds);
+    showScreen('connected');
+  }
+
+  function showSuccess(session, receipt) {
+    document.getElementById('suc-pkg').textContent = session.package_name;
+    document.getElementById('suc-receipt').textContent = receipt || 'N/A';
+    startCountdown('suc-timer', session.time_remaining_seconds);
+    showScreen('success');
+  }
+
+  function startCountdown(id, seconds) {
+    clearInterval(state.countdownTimer);
+    const el = document.getElementById(id);
+    let rem = seconds;
+    function tick() {
+      if (rem <= 0) { el.textContent = 'Expired'; clearInterval(state.countdownTimer); return; }
+      const h = Math.floor(rem / 3600);
+      const m = Math.floor((rem % 3600) / 60);
+      const s = rem % 60;
+      el.textContent = h > 0 ? `${h}h ${m}m` : m > 0 ? `${m}m ${s}s` : `${s}s`;
+      rem--;
+    }
+    tick();
+    state.countdownTimer = setInterval(tick, 1000);
+  }
+
+  // ── Toast ─────────────────────────────────────────────────────────────────
+  function toast(msg, type='info') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} show`;
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  boot();
 </script>
 </body>
 </html>
