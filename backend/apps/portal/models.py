@@ -1,1 +1,1 @@
-# Portal app has no models of its own
+# Portal app has no models
